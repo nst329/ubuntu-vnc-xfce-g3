@@ -46,6 +46,8 @@ main() {
             \
             ${FEATURES_FIREFOX:+--build-arg ARG_MERGE_STAGE_BROWSER_BASE="stage_firefox"} \
             ${FEATURES_FIREFOX_PLUS:+--build-arg ARG_MERGE_STAGE_BROWSER_BASE="stage_firefox_plus"} \
+	    \
+	    --build-arg ARG_HEADLESS_USER_NAME=ubuntu \
             \
         -t "${DOCKER_REPO}":"${DOCKER_TAG}" "${_build_context}"
     set +x
