@@ -9,8 +9,9 @@ main() {
             # result=$(wget -qO- \
             result=$(curl -sL \
                 http://archive.ubuntu.com/ubuntu/pool/universe/c/chromium-browser/ \
-                | grep -Po -m1 '(?<=href=")[^_]*_([0-9.]+-0ubuntu0\.18\.04\.[^_"]*)_[^"]*' \
-                | cut -d _ -f 2 \
+		| grep chromium-browser \
+		| grep 0ubuntu0.18.04.\*_amd64.deb \
+		| sed -E 's/[^_]*_([0-9.]+-0ubuntu0\.18\.04\.[^_"]*)_[^"]*.*/\1/'
             )
             ;;
 
