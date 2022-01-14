@@ -37,6 +37,20 @@ RUN \
         tini \
         wget
 
+RUN apt update \
+    && apt install -y gpg-agent \
+    && apt install -y --no-install-recommends --allow-unauthenticated \
+        curl \
+        ffmpeg \
+        openssh-server less openjdk-8-jre sudo nfs-common htop \
+    && curl -sSL https://keys.anydesk.com/repos/DEB-GPG-KEY | apt-key add \
+    && echo "deb http://deb.anydesk.com/ all main" > /etc/apt/sources.list.d/anydesk-stable.list \
+    && apt update \
+    && apt install -y anydesk \
+    && apt-get autoclean -y \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/apt/*
 
 #################
 ### stage_xserver
@@ -292,6 +306,7 @@ COPY ./src/xfce-startup "${STARTUPDIR}"/
 COPY ./xfce/src/home/config "${HOME}"/.config/
 COPY ./xfce/src/home/Desktop "${HOME}"/Desktop/
 COPY ./xfce/src/home/readme*.md "${HOME}"/
+COPY ./src/xfce-startup/sudo_startup.sh "${HOME}"/
 
 ### Create the default application user (non-root, but member of the group zero)
 ### and allow the group zero to modify '/etc/passwd' and '/etc/group'.
@@ -324,19 +339,19 @@ ARG ARG_VCS_REF
 ARG ARG_VERSION_STICKER
 
 LABEL \
-    org.opencontainers.image.authors="accetto" \
+    org.opencontainers.image.authors="nst329" \
     org.opencontainers.image.created="${ARG_CREATED}" \
     org.opencontainers.image.description="Headless Ubuntu/Xfce/VNC/noVNC containers with Internet browsers" \
-    org.opencontainers.image.documentation="https://github.com/accetto/ubuntu-vnc-xfce-g3" \
-    org.opencontainers.image.source="https://github.com/accetto/ubuntu-vnc-xfce-g3" \
-    org.opencontainers.image.title="accetto/ubuntu-vnc-xfce-g3" \
-    org.opencontainers.image.url="https://github.com/accetto/ubuntu-vnc-xfce-g3" \
-    org.opencontainers.image.vendor="https://github.com/accetto" \
+    org.opencontainers.image.documentation="https://github.com/nst329/ubuntu-vnc-xfce-g3" \
+    org.opencontainers.image.source="https://github.com/nst329/ubuntu-vnc-xfce-g3" \
+    org.opencontainers.image.title="nst329/ubuntu-vnc-xfce-g3" \
+    org.opencontainers.image.url="https://github.com/nst329/ubuntu-vnc-xfce-g3" \
+    org.opencontainers.image.vendor="https://github.com/nst329" \
     org.opencontainers.image.version="${ARG_DOCKER_TAG}"
 
 LABEL \
-    org.label-schema.vcs-url="https://github.com/accetto/ubuntu-vnc-xfce-g3" \
+    org.label-schema.vcs-url="https://github.com/nst329/ubuntu-vnc-xfce-g3" \
     org.label-schema.vcs-ref="${ARG_VCS_REF}"
 
 LABEL \
-    any.accetto.version-sticker="${ARG_VERSION_STICKER}"
+    any.nst329.version-sticker="${ARG_VERSION_STICKER}"
